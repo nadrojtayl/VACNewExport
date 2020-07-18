@@ -1,6 +1,6 @@
 
 import React from 'react';
-
+import Multiplier from './Multiplier.js'
  import { TextInput, StyleSheet, ScrollView, TouchableOpacity, Button, Picker, Switch, Image, Text, View } from 'react-native';
       import appData from './global.js';
       function try_eval(input){

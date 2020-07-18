@@ -4,17 +4,26 @@ var name = "Alex-Herrera";
 axios.get('https://streamedbooks.herokuapp.com/apps?name=' + name)
 .then(function (response) {
 	
-	var {page,
-      clickfunctions,
-      app_children,
-      app_styles,
-      appdata,
-      color,
-      databases} = response.data[0];
-      app_children = JSON.parse(app_children);
-      appdata = JSON.parse(appdata);
-      app_styles = JSON.parse(app_styles);
-      fs.writeFileSync(__dirname + "/FirstPage.js",translate_page(page,app_children,app_styles,clickfunctions,databases,appdata));
+	
+      response.data.forEach(function(data,int){
+
+
+        var {page,
+        clickfunctions,
+        app_children,
+        app_styles,
+        appdata,
+        color,
+        databases} = response.data[int];
+
+
+         app_children = JSON.parse(app_children);
+        appdata = JSON.parse(appdata);
+        app_styles = JSON.parse(app_styles);
+        fs.writeFileSync(__dirname + "/downloaded_pages/" +page +".js",translate_page(page,app_children,app_styles,clickfunctions,databases,appdata));
+      })
+     
+      
 })
 .catch(function (error) {
 	console.log(error);
@@ -24,7 +33,7 @@ axios.get('https://streamedbooks.herokuapp.com/apps?name=' + name)
 function translate_page(page_name,children,childrenAdditionalStyles,clickfunctions,databases,appdata,color){
 	return `
 import React from 'react';
-
+import Multiplier from './Multiplier.js'
  import { TextInput, StyleSheet, ScrollView, TouchableOpacity, Button, Picker, Switch, Image, Text, View } from 'react-native';
       import appData from './global.js';
       function try_eval(input){
