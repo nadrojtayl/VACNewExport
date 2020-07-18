@@ -45,14 +45,15 @@ import Calendar from "./Components/Calendar.js";
 import AudioPlayer from 'react-native-play-audio';
 
 var d = new Date();
-window.month = d.getMonth();
-window.day = d.getDate();
+var month = d.getMonth();
+var day = d.getDate();
+global.month = d.getMonth();
+global.day = d.getDate();
 
 function hasNumber(myString) {
   return /\d/.test(myString);
 }
 
-window.Back = "Back";
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -77,6 +78,7 @@ function runWithInterval(script_string,interval){
 }
 
 window.runWithInterval = runWithInterval;
+runWithInterval = runWithInterval;
 
 function try_eval(input){
   try {
@@ -164,7 +166,7 @@ function filter_list_of_objs_multiple_keys(arr,filter_object){
   })
 }
 
-window.filter_list_of_objs_multiple_keys = filter_list_of_objs_multiple_keys;
+global.filter_list_of_objs_multiple_keys = filter_list_of_objs_multiple_keys;
 
 
 function map_list_of_objs(arr,key){
@@ -173,13 +175,13 @@ function map_list_of_objs(arr,key){
   })
 }
 
-window.map_list_of_objs = map_list_of_objs;
+global.map_list_of_objs = map_list_of_objs;
 
 function clone(arr){
   return arr.slice();
 }
 
-window.audio = [];
+global.audio = [];
 function play(url){
   
 AudioPlayer.prepare(url, () => {
@@ -208,10 +210,10 @@ function pause(){
   })
 }
 
-window.play = play;
-window.pause = pause;
+global.play = play;
+global.pause = pause;
 
-window.clone = clone;
+global.clone = clone;
 
 function convert_spreadsheet_data_to_obj(data){
   return {
@@ -252,7 +254,7 @@ function unwrap_dynamically(value,default_value){
 
     render()
     { 
-      var appData = this.state; var that = this; 
+      var that = this; 
       
       if(!that.props.loaded){
         return(<View><Text>LOADING</Text></View>)
@@ -294,6 +296,8 @@ function exportElemToExpo(name,int, page, childrenAdditionalStyle, clickfunction
       }
       
     })
+
+    
   
     if(name === "text"){
       return `<Text
