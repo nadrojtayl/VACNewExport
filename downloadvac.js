@@ -1,5 +1,5 @@
- var axios = require('axios');
- var fs = require('fs');
+var axios = require('axios');
+var fs = require('fs');
 var name = "Alex-Herrera";
 axios.get('https://streamedbooks.herokuapp.com/apps?name=' + name)
 .then(function (response) {
@@ -17,13 +17,13 @@ axios.get('https://streamedbooks.herokuapp.com/apps?name=' + name)
         databases} = response.data[int];
 
 
-         app_children = JSON.parse(app_children);
+        app_children = JSON.parse(app_children);
         appdata = JSON.parse(appdata);
         app_styles = JSON.parse(app_styles);
-        fs.writeFileSync(__dirname + "/downloaded_pages/" +page +".js",translate_page(page,app_children,app_styles,clickfunctions,databases,appdata));
+        fs.writeFileSync(__dirname + "/downloadedpages/" +page +".js",translate_page(page,app_children,app_styles,clickfunctions,databases,appdata));
         if(int === response.data.length-1){
-           fs.writeFileSync(__dirname + "/downloaded_pages/global.js",JSON.stringify(appdata));
-           fs.writeFileSync(__dirname + "/downloaded_pages/App.js",make_App_page(databases, response.data.map(function(data){return data.page}) ));
+           fs.writeFileSync(__dirname + "/downloadedpages/global.js",`var global = `+ JSON.stringify(appdata) + `\n\n` + `export default global;`);
+           fs.writeFileSync(__dirname + "/downloadedpages/App.js",make_App_page(databases, response.data.map(function(data){return data.page}) ));
         }
       })
      
@@ -41,7 +41,8 @@ function translate_page(page_name,children,childrenAdditionalStyles,clickfunctio
 	return `
 import React, { Component } from "react";
 import { Button, Picker, Switch, Image, ScrollView, TouchableOpacity, StyleSheet, Text, View, TextInput, Dimensions } from "react-native";
-import Calendar from "./Components/Calendar.js";
+import Calendar from "./Calendar.js";
+import appData from "./global.js";
 import AudioPlayer from 'react-native-play-audio';
 
 var d = new Date();
@@ -238,7 +239,7 @@ function unwrap_dynamically(value,default_value){
 
 
 
- class {`+page_name+`} extends React.Component {
+ class `+page_name+` extends React.Component {
      
 
     constructor(props)
@@ -252,8 +253,7 @@ function unwrap_dynamically(value,default_value){
 
    
 
-    render()
-    { 
+    render(){ 
       var that = this; 
       
       if(!that.props.loaded){
@@ -268,12 +268,8 @@ function unwrap_dynamically(value,default_value){
       +`
         </View>
         )
-      }
     }
-    
-      
-
-    }
+  }
     export default `+page_name+`; 
 
 
@@ -297,12 +293,12 @@ function exportElemToExpo(name,int, page, childrenAdditionalStyle, clickfunction
       
     })
 
-    
+
   
     if(name === "text"){
       return `<Text
           style= {`+ JSON.stringify(childrenAdditionalStyle) +`}
-        > {` + (childrenAdditionalStyle.innerText !== undefined ? childrenAdditionalStyle.innerText:"")  + `} </Text>
+        > {` + (childrenAdditionalStyle.innerText !== undefined ? childrenAdditionalStyle.innerText:"").replace(";","")  + `} </Text>
         `
 
 
@@ -378,7 +374,7 @@ function exportElemToExpo(name,int, page, childrenAdditionalStyle, clickfunction
     if(name === "button"){
       return` <TouchableOpacity
           
-          onPress = { function(){`+ ((typeof clickfunction === "string") ? clickfunction.split("goTo").join("that.props.goTo"):"") + `; that.forceUpdate(); }}  
+          onPress = { function(){`+ ((typeof clickfunction === "string") ? clickfunction.split("goTo").join("that.props.goTo"):"") + ";" +` that.forceUpdate(); }}  
           style= {[{
             shadowColor: 'rgba(0,0,0, .4)', // IOS
             shadowOffset: { height: 1, width: 1 }, // IOS
