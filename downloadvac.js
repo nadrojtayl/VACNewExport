@@ -297,7 +297,7 @@ function exportElemToExpo(name,int, page, childrenAdditionalStyle, clickfunction
   
     if(name === "text"){
       return `<Text
-          style= [{position:'absolute'},`+ JSON.stringify(childrenAdditionalStyle) +`]
+          style= {[{position:'absolute'},`+ JSON.stringify(childrenAdditionalStyle) +`]}
         > {` + (childrenAdditionalStyle.innerText !== undefined ? childrenAdditionalStyle.innerText:"").replace(";","")  + `} </Text>
         `
 
@@ -416,7 +416,7 @@ pages.map(function(page){
   return `import `+page+` from './downloadedpages/`+page+`.js'`
 }).join("\n")
 +`
-import appData from './global.js';
+import appData from './downloadedpages/global.js';
 /*
 EXPORT PROCESS
 
