@@ -23,7 +23,7 @@ axios.get('https://streamedbooks.herokuapp.com/apps?name=' + name)
         fs.writeFileSync(__dirname + "/downloadedpages/" +page +".js",translate_page(page,app_children,app_styles,clickfunctions,databases,appdata,color));
         if(int === response.data.length-1){
            fs.writeFileSync(__dirname + "/downloadedpages/global.js",`var global = `+ JSON.stringify(appdata) + `\n\n` + `export default global;`);
-           fs.writeFileSync(__dirname + "/downloadedpages/App.js",make_App_page(databases, response.data.map(function(data){return data.page}) ));
+           fs.writeFileSync(__dirname + "/App.js",make_App_page(databases, response.data.map(function(data){return data.page}) ));
         }
       })
      
