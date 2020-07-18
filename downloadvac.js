@@ -510,7 +510,7 @@ this.state = {dbLinks:{}, loaded:false, page:"FirstPage"}
 
 render(){ 
 
-  var appData = this.state; var that = this; 
+  var that = this; 
 
   `+ 
   pages.map(function(page){
