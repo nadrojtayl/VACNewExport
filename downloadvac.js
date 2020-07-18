@@ -297,7 +297,7 @@ function exportElemToExpo(name,int, page, childrenAdditionalStyle, clickfunction
   
     if(name === "text"){
       return `<Text
-          style= [{position:'absolute'},{`+ JSON.stringify(childrenAdditionalStyle) +`}]
+          style= [{position:'absolute'},`+ JSON.stringify(childrenAdditionalStyle) +`]
         > {` + (childrenAdditionalStyle.innerText !== undefined ? childrenAdditionalStyle.innerText:"").replace(";","")  + `} </Text>
         `
 
@@ -635,18 +635,5 @@ export default App;
 
 
   `
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   }
