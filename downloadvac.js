@@ -1,6 +1,6 @@
 var axios = require('axios');
 var fs = require('fs');
-var name = "Alex-Herrera";
+var name = "Baptiste-Louis";
 axios.get('https://streamedbooks.herokuapp.com/apps?name=' + name)
 .then(function (response) {
 	
@@ -22,6 +22,7 @@ axios.get('https://streamedbooks.herokuapp.com/apps?name=' + name)
         app_styles = JSON.parse(app_styles);
         fs.writeFileSync(__dirname + "/downloadedpages/" +page +".js",translate_page(page,app_children,app_styles,clickfunctions,databases,appdata,color));
         if(int === response.data.length-1){
+          console.log(databases);
            fs.writeFileSync(__dirname + "/downloadedpages/global.js",`var global = `+ JSON.stringify(appdata) + `\n\n` + `export default global;`);
            fs.writeFileSync(__dirname + "/App.js",make_App_page(databases, response.data.map(function(data){return data.page}) ));
         }
@@ -43,7 +44,7 @@ import React, { Component } from "react";
 import { Button, Picker, Switch, Image, ScrollView, TouchableOpacity, StyleSheet, Text, View, TextInput, Dimensions } from "react-native";
 import Calendar from "./Calendar.js";
 import appData from "./global.js";
-import AudioPlayer from 'react-native-play-audio';
+//import AudioPlayer from 'react-native-play-audio';
 
 var d = new Date();
 var month = d.getMonth();
